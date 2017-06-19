@@ -1,0 +1,240 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "virtualMachines_puppet_name": {
+            "defaultValue": "puppet",
+            "type": "String"
+        },
+        "networkInterfaces_puppet889_name": {
+            "defaultValue": "puppet889",
+            "type": "String"
+        },
+        "networkSecurityGroups_puppet_nsg_name": {
+            "defaultValue": "puppet-nsg",
+            "type": "String"
+        },
+        "publicIPAddresses_puppet_ip_name": {
+            "defaultValue": "puppet-ip",
+            "type": "String"
+        },
+        "virtualNetworks_puppet_vnet_name": {
+            "defaultValue": "puppet-vnet",
+            "type": "String"
+        },
+        "storageAccounts_puppetdiag543_name": {
+            "defaultValue": "puppetdiag543",
+            "type": "String"
+        },
+        "storageAccounts_puppetdisks711_name": {
+            "defaultValue": "puppetdisks711",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "comments": "Generalized from resource: '/subscriptions/82efaddc-6a0b-45eb-a41f-6e2317b2bbd3/resourceGroups/puppet/providers/Microsoft.Compute/virtualMachines/puppet'.",
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "[parameters('virtualMachines_puppet_name')]",
+            "apiVersion": "2016-04-30-preview",
+            "location": "centralus",
+            "scale": null,
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "Standard_DS2_v2"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "Canonical",
+                        "offer": "UbuntuServer",
+                        "sku": "16.04-LTS",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "osType": "Linux",
+                        "name": "[parameters('virtualMachines_puppet_name')]",
+                        "createOption": "FromImage",
+                        "vhd": {
+                            "uri": "[concat('https', '://', parameters('storageAccounts_puppetdisks711_name'), '.blob.core.windows.net', concat('/vhds/', parameters('virtualMachines_puppet_name'),'20170615151611.vhd'))]"
+                        },
+                        "caching": "ReadWrite"
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "[parameters('virtualMachines_puppet_name')]",
+                    "adminUsername": "[parameters('virtualMachines_puppet_name')]",
+                    "linuxConfiguration": {
+                        "disablePasswordAuthentication": false
+                    },
+                    "secrets": []
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_puppet889_name'))]"
+                        }
+                    ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true,
+                        "storageUri": "[concat('https', '://', parameters('storageAccounts_puppetdiag543_name'), '.blob.core.windows.net', '/')]"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_puppetdisks711_name'))]",
+                "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_puppet889_name'))]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_puppetdiag543_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/82efaddc-6a0b-45eb-a41f-6e2317b2bbd3/resourceGroups/puppet/providers/Microsoft.Network/networkInterfaces/puppet889'.",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[parameters('networkInterfaces_puppet889_name')]",
+            "apiVersion": "2017-03-01",
+            "location": "centralus",
+            "scale": null,
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAddress": "10.0.0.4",
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_puppet_ip_name'))]"
+                            },
+                            "subnet": {
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_puppet_vnet_name')), '/subnets/default')]"
+                            }
+                        }
+                    }
+                ],
+                "dnsSettings": {
+                    "dnsServers": []
+                },
+                "enableIPForwarding": false,
+                "networkSecurityGroup": {
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_puppet_nsg_name'))]"
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_puppet_ip_name'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_puppet_vnet_name'))]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_puppet_nsg_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/82efaddc-6a0b-45eb-a41f-6e2317b2bbd3/resourceGroups/puppet/providers/Microsoft.Network/networkSecurityGroups/puppet-nsg'.",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "name": "[parameters('networkSecurityGroups_puppet_nsg_name')]",
+            "apiVersion": "2017-03-01",
+            "location": "centralus",
+            "scale": null,
+            "properties": {
+                "securityRules": [
+                    {
+                        "name": "default-allow-ssh",
+                        "properties": {
+                            "protocol": "TCP",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "22",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 1000,
+                            "direction": "Inbound"
+                        }
+                    },
+                    {
+                        "name": "in",
+                        "properties": {
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "8140",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 1010,
+                            "direction": "Inbound"
+                        }
+                    }
+                ]
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/82efaddc-6a0b-45eb-a41f-6e2317b2bbd3/resourceGroups/puppet/providers/Microsoft.Network/publicIPAddresses/puppet-ip'.",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "[parameters('publicIPAddresses_puppet_ip_name')]",
+            "apiVersion": "2017-03-01",
+            "location": "centralus",
+            "scale": null,
+            "properties": {
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": 4
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/82efaddc-6a0b-45eb-a41f-6e2317b2bbd3/resourceGroups/puppet/providers/Microsoft.Network/virtualNetworks/puppet-vnet'.",
+            "type": "Microsoft.Network/virtualNetworks",
+            "name": "[parameters('virtualNetworks_puppet_vnet_name')]",
+            "apiVersion": "2017-03-01",
+            "location": "centralus",
+            "scale": null,
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "10.0.0.0/24"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "default",
+                        "properties": {
+                            "addressPrefix": "10.0.0.0/24"
+                        }
+                    }
+                ],
+                "virtualNetworkPeerings": []
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/82efaddc-6a0b-45eb-a41f-6e2317b2bbd3/resourceGroups/puppet/providers/Microsoft.Storage/storageAccounts/puppetdiag543'.",
+            "type": "Microsoft.Storage/storageAccounts",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "Storage",
+            "name": "[parameters('storageAccounts_puppetdiag543_name')]",
+            "apiVersion": "2016-01-01",
+            "location": "centralus",
+            "tags": {},
+            "scale": null,
+            "properties": {},
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/82efaddc-6a0b-45eb-a41f-6e2317b2bbd3/resourceGroups/puppet/providers/Microsoft.Storage/storageAccounts/puppetdisks711'.",
+            "type": "Microsoft.Storage/storageAccounts",
+            "sku": {
+                "name": "Premium_LRS",
+                "tier": "Premium"
+            },
+            "kind": "Storage",
+            "name": "[parameters('storageAccounts_puppetdisks711_name')]",
+            "apiVersion": "2016-01-01",
+            "location": "centralus",
+            "tags": {},
+            "scale": null,
+            "properties": {},
+            "dependsOn": []
+        }
+    ]
+}
