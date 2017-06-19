@@ -26,31 +26,28 @@
             "defaultValue": "puppetdiag543",
             "type": "String"
         },
-        "storageAccounts_puppetdisks712_name": {
-            "defaultValue": "puppetdisks712",
+        "storageAccounts_puppetdisks711_name": {
+            "defaultValue": "puppetdisks711",
             "type": "String"
         },
         "count": { 
             "type": "int", 
             "defaultValue": 3 
-        } 
+        }
     },
-    "variables": 
-    {
-
-    },
+    "variables": {},
     "resources": [
         {
             "comments": "Generalized from resource: '/subscriptions/82efaddc-6a0b-45eb-a41f-6e2317b2bbd3/resourceGroups/puppet/providers/Microsoft.Compute/virtualMachines/puppet'.",
             "type": "Microsoft.Compute/virtualMachines",
-            "name": "[concat('puppet',copyIndex())]",
+            "name": "[concat('puppet', copyIndex(1))]",
             "apiVersion": "2016-04-30-preview",
             "location": "centralus",
             "scale": null,
             "copy": { 
-                "name": "websitescopy", 
-                "count": "[parameters('count')]" 
-            }, 
+             "name": "websitescopy", 
+             "count": "[parameters('count')]" 
+            },
             "properties": {
                 "hardwareProfile": {
                     "vmSize": "Standard_DS2_v2"
@@ -64,10 +61,10 @@
                     },
                     "osDisk": {
                         "osType": "Linux",
-                        "name": "[concat('puppet',copyIndex()]",
+                        "name": "[parameters('virtualMachines_puppet_name')]",
                         "createOption": "FromImage",
                         "vhd": {
-                            "uri": "[concat('https', '://', parameters('storageAccounts_puppetdisks712_name'), '.blob.core.windows.net', concat('/vhds/', parameters('virtualMachines_puppet_name'),'20170615151611.vhd'))]"
+                            "uri": "[concat('https', '://', parameters('storageAccounts_puppetdisks711_name'), '.blob.core.windows.net', concat('/vhds/', parameters('virtualMachines_puppet_name'),'20170615151611.vhd'))]"
                         },
                         "caching": "ReadWrite"
                     },
@@ -95,7 +92,11 @@
                     }
                 }
             },
-            "dependsOn": []
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_puppetdisks711_name'))]",
+                "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_puppet889_name'))]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_puppetdiag543_name'))]"
+            ]
         },
         {
             "comments": "Generalized from resource: '/subscriptions/82efaddc-6a0b-45eb-a41f-6e2317b2bbd3/resourceGroups/puppet/providers/Microsoft.Network/networkInterfaces/puppet889'.",
@@ -235,7 +236,7 @@
                 "tier": "Premium"
             },
             "kind": "Storage",
-            "name": "parameters('storageAccounts_puppetdisks712_name')",
+            "name": "[parameters('storageAccounts_puppetdisks711_name')]",
             "apiVersion": "2016-01-01",
             "location": "centralus",
             "tags": {},
