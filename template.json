@@ -56,7 +56,7 @@
                         "name": "[parameters('virtualMachines_puppet_name')]",
                         "createOption": "FromImage",
                         "vhd": {
-                            "uri": "[concat('https', '://', parameters('storageAccounts_puppetdisks711_name'), '.blob.core.windows.net', concat('/vhds/', parameters('virtualMachines_puppet_name'),'20170615151611.vhd'))]"
+                            "uri": "[concat('https', '://', parameters('storageAccounts_puppetdisks712_name'), '.blob.core.windows.net', concat('/vhds/', parameters('virtualMachines_puppet_name'),'20170615151611.vhd'))]"
                         },
                         "caching": "ReadWrite"
                     },
@@ -85,7 +85,7 @@
                 }
             },
             "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_puppetdisks711_name'))]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_puppetdisks712_name'))]",
                 "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_puppet889_name'))]",
                 "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_puppetdiag543_name'))]"
             ]
