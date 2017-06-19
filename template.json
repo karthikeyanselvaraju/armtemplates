@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "virtualMachines_puppet_name": {
-            "defaultValue": "armpuppet",
+            "defaultValue": "puppet[date('year')]",
             "type": "String"
         },
         "networkInterfaces_puppet889_name": {
@@ -23,11 +23,11 @@
             "type": "String"
         },
         "storageAccounts_puppetdiag543_name": {
-            "defaultValue": "puppetdiag543",
+            "defaultValue": "puppetdiag543[date('year')]",
             "type": "String"
         },
         "storageAccounts_puppetdisks712_name": {
-            "defaultValue": "puppetdisks712",
+            "defaultValue": "puppetdisks712[date('year')]",
             "type": "String"
         }
     },
