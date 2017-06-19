@@ -87,6 +87,10 @@
                     }
                 }
             },
+            "copy": {
+                "name": "storagecopy",
+                "count": 3
+            }
             "dependsOn": [
                 "[resourceId('Microsoft.Storage/storageAccounts', concat[parameters('storageAccounts_puppetdisks712_name'),copyIndex()])]",
                 "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_puppet889_name'))]",
