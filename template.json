@@ -43,7 +43,7 @@
         {
             "comments": "Generalized from resource: '/subscriptions/82efaddc-6a0b-45eb-a41f-6e2317b2bbd3/resourceGroups/puppet/providers/Microsoft.Compute/virtualMachines/puppet'.",
             "type": "Microsoft.Compute/virtualMachines",
-            "name": "[concat(parameters('virtualMachines_puppet_name'),copyIndex())]",
+            "name": "[concat('puppet',copyIndex())]",
             "apiVersion": "2016-04-30-preview",
             "location": "centralus",
             "scale": null,
@@ -64,7 +64,7 @@
                     },
                     "osDisk": {
                         "osType": "Linux",
-                        "name": "[parameters('virtualMachines_puppet_name'),copyIndex()]",
+                        "name": "[concat('puppet',copyIndex()]",
                         "createOption": "FromImage",
                         "vhd": {
                             "uri": "[concat('https', '://', parameters('storageAccounts_puppetdisks712_name'), '.blob.core.windows.net', concat('/vhds/', parameters('virtualMachines_puppet_name'),'20170615151611.vhd'))]"
