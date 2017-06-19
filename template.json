@@ -29,7 +29,11 @@
         "storageAccounts_puppetdisks712_name": {
             "defaultValue": "puppetdisks712",
             "type": "String"
-        }
+        },
+        "count": { 
+            "type": "int", 
+            "defaultValue": 3 
+        } 
     },
     "variables": 
     {
@@ -43,6 +47,10 @@
             "apiVersion": "2016-04-30-preview",
             "location": "centralus",
             "scale": null,
+            "copy": { 
+                "name": "websitescopy", 
+                "count": "[parameters('count')]" 
+            }, 
             "properties": {
                 "hardwareProfile": {
                     "vmSize": "Standard_DS2_v2"
@@ -87,15 +95,7 @@
                     }
                 }
             },
-            "copy": {
-                "name": "storagecopy",
-                "count": 3
-            }
-            "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts', concat[parameters('storageAccounts_puppetdisks712_name'),copyIndex()])]",
-                "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_puppet889_name'))]",
-                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_puppetdiag543_name'))]"
-            ]
+            "dependsOn": []
         },
         {
             "comments": "Generalized from resource: '/subscriptions/82efaddc-6a0b-45eb-a41f-6e2317b2bbd3/resourceGroups/puppet/providers/Microsoft.Network/networkInterfaces/puppet889'.",
