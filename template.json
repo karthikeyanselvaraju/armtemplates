@@ -39,7 +39,7 @@
         {
             "comments": "Generalized from resource: '/subscriptions/82efaddc-6a0b-45eb-a41f-6e2317b2bbd3/resourceGroups/puppet/providers/Microsoft.Compute/virtualMachines/puppet'.",
             "type": "Microsoft.Compute/virtualMachines",
-            "name": "concat[parameters('virtualMachines_puppet_name'),copyIndex()]",
+            "name": "[concat(parameters('virtualMachines_puppet_name'),copyIndex())]",
             "apiVersion": "2016-04-30-preview",
             "location": "centralus",
             "scale": null,
