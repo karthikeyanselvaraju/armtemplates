@@ -26,8 +26,8 @@
             "defaultValue": "puppetdiag543",
             "type": "String"
         },
-        "storageAccounts_puppetdisks711_name": {
-            "defaultValue": "puppetdisks711",
+        "storageAccounts_puppetdisks712_name": {
+            "defaultValue": "puppetdisks712",
             "type": "String"
         }
     },
@@ -228,7 +228,7 @@
                 "tier": "Premium"
             },
             "kind": "Storage",
-            "name": "[parameters('storageAccounts_puppetdisks711_name')]",
+            "name": "[parameters('storageAccounts_puppetdisks712_name')]",
             "apiVersion": "2016-01-01",
             "location": "centralus",
             "tags": {},
